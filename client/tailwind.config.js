@@ -3,19 +3,19 @@
 import tailwindScrollbarHide from "tailwind-scrollbar-hide";
 module.exports = {
   content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
-         container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
+      container: {
+        center: true,
+        padding: "2rem",
+        screens: {
+          "2xl": "1400px",
+        },
       },
-    },
       colors: {
         tomato: "#FF6347",
         "tomato-red": "#E94B3C",
@@ -75,5 +75,5 @@ module.exports = {
       },
     },
   },
- plugins: [tailwindScrollbarHide],
+  plugins: [tailwindScrollbarHide],
 };
