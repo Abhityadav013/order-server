@@ -30,6 +30,8 @@ import {
   useFetchUserAddressesQuery,
   useFetchUserDeliveryQuery,
 } from "@/store/api/addressApi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface MenuAppProps {
   initialCategories: CategoryWithItems[];
@@ -192,7 +194,9 @@ export const MenuApp: React.FC<MenuAppProps> = ({
     }
     if (
       !customerInfo ||
-      (Object.keys(customerInfo).length === 0 &&  (customerDetails && !customerDetails.hasAddress))
+      (Object.keys(customerInfo).length === 0 &&
+        customerDetails &&
+        !customerDetails.hasAddress)
     ) {
     }
 
@@ -208,6 +212,17 @@ export const MenuApp: React.FC<MenuAppProps> = ({
 
     try {
       addToCart(item);
+      if (window.innerWidth < 768) {
+        toast.success(`${item.name} added to basket`, {
+          position: "top-center",
+          autoClose: 2000, // 2 seconds
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          theme: "colored",
+        });
+      }
       // Don't manually update basketItems here - let the hook handle it
     } catch (error) {
       // Handle cart busy error silently - this is expected behavior
@@ -275,6 +290,12 @@ export const MenuApp: React.FC<MenuAppProps> = ({
         <RestaurantAvailabilityBanner
           onAvailabilityChange={setIsRestaurantOpen}
         />
+        <ToastContainer
+          limit={1} // only show one toast at a time
+          newestOnTop
+          pauseOnFocusLoss={false}
+          closeButton={false}
+        />
         <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
         <CategoryList
           categories={filteredCategories}
@@ -316,7 +337,9 @@ export const MenuApp: React.FC<MenuAppProps> = ({
       {/* Right side: show SkeletonSidebar until the app is ready */}
       {isReady ? (
         <BasketPanel
-          customerDetails={customerDetails?.customerDetails ?? {} as CustomerDetails}
+          customerDetails={
+            customerDetails?.customerDetails ?? ({} as CustomerDetails)
+          }
           deliveryDetails={deliveryDetails!}
           basketItems={items}
           isDelivery={isDelivery}
@@ -341,7 +364,9 @@ export const MenuApp: React.FC<MenuAppProps> = ({
       )}
 
       <AddressForm
-        customerDetails={customerDetails?.customerDetails ?? {} as CustomerDetails}
+        customerDetails={
+          customerDetails?.customerDetails ?? ({} as CustomerDetails)
+        }
         hasAddress={isAddressModelOpen}
         isDelivery={isDelivery}
         setAddressModelOpen={setAddressModelOpen}
