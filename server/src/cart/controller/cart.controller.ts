@@ -129,7 +129,7 @@ export class CartController {
 
   /**
    * @swagger
-   * /api/v1/cart:
+   * /v1/cart:
    *   post:
    *     summary: Create or update cart
    *     description: Updates the cart for the current device (identified via "ssid" header or middleware-provided deviceId). If `isCartEmpty` is true, the cart is cleared.

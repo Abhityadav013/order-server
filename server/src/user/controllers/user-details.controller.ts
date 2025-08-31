@@ -6,7 +6,7 @@ export class UserDetailsController {
   private readonly service = new UserDetailsService();
   /**
    * @swagger
-   * /api/user-details/create:
+   * /user-details/create:
    *   post:
    *     summary: Create customer info
    *     tags: [UserDetails]

@@ -8,7 +8,7 @@ export class RestroInfoController {
 
   /**
    * @swagger
-   * /api/v1/info:
+   * /v1/info:
    *   get:
    *     summary: Get restaurant operating status
    *     description: Returns current opening state, hours and next opening time

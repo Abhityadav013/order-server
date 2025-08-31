@@ -64,19 +64,18 @@ app.use(morgan("dev"));
 // Swagger
 setupSwagger(app);
 
-app.use("/api/v1/session", sessionRouter);
+app.use("/v1/session", sessionRouter);
 
 const repo = new SessionRepository();
 app.use(sessionMiddleware({ repo }));
 // Example: routes that might rely on session already being established
 
 // app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/user-details", requireDeviceAndTid, userDetailsRoute);
-app.use("/api/v1/menu", menuDetailRoute);
-app.use("/api/v1/category", categoryDetailRoute);
-app.use("/api/v1/info", infoRoute);
-app.use("/api/v1/cart", requireDeviceAndTid, cartRoute);
-
+app.use("/v1/user-details", requireDeviceAndTid, userDetailsRoute);
+app.use("/v1/menu", menuDetailRoute);
+app.use("/v1/category", categoryDetailRoute);
+app.use("/v1/info", infoRoute);
+app.use("/v1/cart", requireDeviceAndTid, cartRoute);
 app.use("/webhook", requireDeviceAndTid, deliveryWebhookRoutes);
 
 // Error handler

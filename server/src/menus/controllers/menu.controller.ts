@@ -7,7 +7,7 @@ export class MenuDetailsController {
 
     /**
    * @swagger
-   * /api/v1/menu/listing:
+   * /v1/menu/listing:
    *   get:
    *     summary: Get all menu items
    *     description: Returns a list of all available menu items in the menu.

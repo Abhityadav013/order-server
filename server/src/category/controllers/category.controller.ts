@@ -7,7 +7,7 @@ export class CategoryDetailsController {
 
 /**
  * @swagger
- * /api/v1/category/listing:
+ * /v1/category/listing:
  *   get:
  *     summary: Get all categories of menu items
  *     description: Returns a list of all available categories of the menu.

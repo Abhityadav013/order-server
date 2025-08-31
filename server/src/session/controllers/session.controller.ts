@@ -7,7 +7,7 @@ export class SessionController {
 
   /**
    * @openapi
-   * /api/v1/session:
+   * /v1/session:
    *   post:
    *     tags:
    *       - Session
