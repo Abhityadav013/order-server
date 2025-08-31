@@ -4,7 +4,7 @@ import { MenuItem } from "@/lib/types/menu";
 import MenuApp from "../components/MenuApp";
 import {  DeliveryDetails } from "@/lib/types/user_details";
 import { Info } from "@/lib/types/restro_info";
-
+export const dynamic = 'force-dynamic'; // <- importantclear
 async function getMenuData(): Promise<CategoryWithItems[]> {
   try {
     // Use the API service to fetch data
