@@ -18,7 +18,7 @@ import {
 export class UserDetailsService {
   private readonly repository = new UserRepository();
   async create(deviceId: string, tid: string, model: CustomerInfo) {
-    const errors = [];
+    const errors:{key:string,message:string}[] = [];
     if (model.name == "" || model.phoneNumber == "") {
       const isNameGiven = model.name.trim().length > 0;
       const isPhoneNumberGiven = model.phoneNumber.trim().length > 0;
