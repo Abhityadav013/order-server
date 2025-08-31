@@ -64,6 +64,11 @@ app.use(morgan("dev"));
 // Swagger
 setupSwagger(app);
 
+// Redirect root '/' to Swagger UI
+app.get("/", (req, res) => {
+  res.redirect("/api-docs");
+});
+
 app.use("/v1/session", sessionRouter);
 
 const repo = new SessionRepository();
@@ -80,6 +85,7 @@ app.use("/webhook", requireDeviceAndTid, deliveryWebhookRoutes);
 
 // Error handler
 app.use(errorHandler);
+
 
 const port = Number(process.env.PORT) || 4000;
 
