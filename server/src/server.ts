@@ -25,12 +25,11 @@ const app = express();
 
 // Allowed frontend origins
 const allowedOrigins = [
-  "https://order.indiantadka.eu/",
+  "https://order.indiantadka.eu",
   "http://localhost:3000",
   "http://127.0.0.1:3000",
   "http://localhost:4000",
   "https://95b2683ee436.ngrok-free.app",
-  "*",
 ];
 const corsOptions: CorsOptions = {
   origin(origin, callback) {

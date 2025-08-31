@@ -152,7 +152,7 @@ export class UserDetailsService {
     await userInformation.save();
 
     if (model.orderType === OrderType.DELIVERY) {
-      const webhookUrl = "http://localhost:4000/webhook/delivery-charge";
+      const webhookUrl = `${process.env.WEBHOOK_API_URL}/delivery-charge`;
       const userAddress = model.address.displayAddress;
       await fetch(webhookUrl, {
         method: "POST",

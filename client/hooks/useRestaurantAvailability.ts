@@ -2,6 +2,7 @@
 // useRestaurantAvailability.ts
 
 import { base_url } from "@/lib/apiEndPoint";
+import { waitForIds } from "@/utils/fetchLocalStorage";
 import { useState, useEffect, useRef } from "react";
 
 interface APIResponse {
@@ -39,10 +40,12 @@ export function useRestaurantAvailability(): UseRestaurantAvailabilityResult {
     setLoading(true);
     setError(null);
     try {
+      const { tid, ssid } = await waitForIds(3, 1000);
+      if (!tid || !ssid) throw new Error("Session IDs not found");
       const res = await fetch(`${base_url}/info`, {
         headers: {
-          "x-device-id": "abc123",
-          "x-tid": "xyz789",
+          "x-device-id": ssid,
+          "x-tid": tid,
         },
       });
       const json: APIResponse = await res.json();

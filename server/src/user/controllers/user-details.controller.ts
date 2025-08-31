@@ -79,8 +79,6 @@ export class UserDetailsController {
       const deviceId = (req as any).deviceId;
       const tid = (req as any).tid;
       const { orderType, customer } = req.body;
-            console.log('req.body:::::::',req.body)
-      console.log('orderType:::::::',orderType)
       const model: CustomerInfo = {
         orderType,
         ...customer,
