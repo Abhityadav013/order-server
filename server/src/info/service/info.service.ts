@@ -1,10 +1,14 @@
 // src/services/restroInfo.service.ts
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat.js";
+import utc from "dayjs/plugin/utc.js";
+import timezone from "dayjs/plugin/timezone.js";
 import { TimeRange } from "../../models/types/time-range";
 import { schedule } from "../../utils/timings";
 
 dayjs.extend(customParseFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export class RestroInfoService {
   private isTimeInRange(currentTime: string, range: TimeRange): boolean {
@@ -15,7 +19,8 @@ export class RestroInfoService {
   }
 
   getRestaurantInfo() {
-    const now = dayjs();
+    // Germany timezone
+    const now = dayjs().tz("Europe/Berlin"); 
     const currentDay = now.format("dddd");
     const currentTime = now.format("HH:mm");
 
@@ -32,6 +37,7 @@ export class RestroInfoService {
     let nextOpeningTime: string | null = null;
 
     if (!isOpenNow) {
+      // Check later hours today
       for (const range of todayHours) {
         if (currentTime < range.start) {
           const [hourStr, minuteStr] = range.start.split(":");
@@ -49,10 +55,11 @@ export class RestroInfoService {
         }
       }
 
+      // Check next day(s)
       if (!nextOpeningTime) {
         for (let i = 1; i <= 7; i++) {
-          const nextDay = now.add(i, "day"); // Dayjs object
-          const nextDayName = nextDay.format("dddd"); // string of day name
+          const nextDay = now.add(i, "day"); 
+          const nextDayName = nextDay.format("dddd");
 
           const hours = schedule[nextDayName];
           if (hours && hours.length > 0) {
