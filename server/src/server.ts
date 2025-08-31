@@ -25,6 +25,7 @@ const app = express();
 
 // Allowed frontend origins
 const allowedOrigins = [
+  "https://order.indiantadka.eu/",
   "http://localhost:3000",
   "http://127.0.0.1:3000",
   "http://localhost:4000",
