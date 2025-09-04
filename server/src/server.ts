@@ -17,7 +17,6 @@ import cartRoute from "./cart/routes/cart.routes";
 import { sessionRouter } from "./session/routes/session.routes";
 import { sessionMiddleware } from "./middleware/cookiesHandler";
 import cookieParser from "cookie-parser";
-import { SessionService } from "./session/service/session.service";
 import { SessionRepository } from "./session/service/session.repository";
 dotenv.config();
 

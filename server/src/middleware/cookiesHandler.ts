@@ -19,8 +19,6 @@ export function sessionMiddleware({ repo }: RepoDeps) {
   ) {
     try {
       // Prefer cookies, fall back to body for first-time bootstrap
-      console.log("sessionMiddleware: url", req.url);
-      console.log("sessionMiddleware: cookies", req.cookies);
       const tid = (req.cookies?.tid as string) ?? req.body?.tid ?? null;
       const ssid = (req.cookies?.ssid as string) ?? req.body?.ssid ?? null;
       if (!tid && !ssid) {

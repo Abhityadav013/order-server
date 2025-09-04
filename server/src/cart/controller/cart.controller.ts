@@ -254,4 +254,132 @@ export class CartController {
       next(error);
     }
   }
+
+  /**
+   * @swagger
+   * 
+   * /v1/cart/basket/{basketId}:
+   *   get:
+   *     summary: Get cart by basketId
+   *     description: Retrieve a user's cart using the basketId.
+   *     tags:
+   *       - Cart
+   *     parameters:
+   *       - in: path
+   *         name: basketId
+   *         required: true
+   *         description: Unique basket identifier
+   *         schema:
+   *           type: string
+   *           example: "ABC123XYZ"
+   *     responses:
+   *       200:
+   *         description: Cart retrieved successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 statusCode:
+   *                   type: integer
+   *                   example: 200
+   *                 data:
+   *                   type: object
+   *                   properties:
+   *                     id:
+   *                       type: string
+   *                       example: "123e4567-e89b-12d3-a456-426614174000"
+   *                     deviceId:
+   *                       type: string
+   *                       example: "device-001"
+   *                     basketId:
+   *                       type: string
+   *                       example: "ABC123XYZ"
+   *                     cartItems:
+   *                       type: array
+   *                       items:
+   *                         type: object
+   *                         properties:
+   *                           itemId:
+   *                             type: string
+   *                             example: "101"
+   *                           itemName:
+   *                             type: string
+   *                             example: "Pizza Margherita"
+   *                           quantity:
+   *                             type: integer
+   *                             example: 2
+   *                           price:
+   *                             type: number
+   *                             example: 9.99
+   *                           customization:
+   *                             type: object
+   *                             properties:
+   *                               notes:
+   *                                 type: string
+   *                                 example: "Extra cheese"
+   *                               options:
+   *                                 type: array
+   *                                 items:
+   *                                   type: string
+   *                                 example: ["Thin crust"]
+   *                               spicyLevel:
+   *                                 type: string
+   *                                 enum: [no_spicy, spicy, very_spicy]
+   *                                 example: "spicy"
+   *       400:
+   *         description: Missing basketId parameter
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 statusCode:
+   *                   type: integer
+   *                   example: 400
+   *                 data:
+   *                   type: "null"
+   *                   example: null
+   *                 message:
+   *                   type: string
+   *                   example: "Missing basketId parameter."
+   *                 success:
+   *                   type: boolean
+   *                   example: false
+   *       404:
+   *         description: Cart not found for this basketId
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 statusCode:
+   *                   type: integer
+   *                   example: 200
+   *                 data:
+   *                   type: object
+   *                   example: {}
+   *                 message:
+   *                   type: string
+   *                   example: "Cart not found for this basketId."
+   */
+  async getCartByBasketId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { basketId } = req.params;
+
+      if (!basketId) {
+        return res.status(400).json({
+          statusCode: 400,
+          data: null,
+          message: "Missing basketId parameter.",
+          success: false,
+        });
+      }
+
+      const result = await this.service.getCartByBasketId(basketId);
+      res.status(result.statusCode).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

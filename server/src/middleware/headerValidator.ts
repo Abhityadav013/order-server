@@ -5,8 +5,9 @@ export function requireDeviceAndTid(
   res: Response,
   next: NextFunction
 ) {
-  // console.log("requireDeviceAndTid: headers", req.headers);
-  // console.log("requireDeviceAndTid: session", req.session);
+  if(req.url.includes('/basket/')){
+    return next();
+  }
   const deviceId = req.header("x-device-id") ?? req.session?.deviceId;
   const tid = req.header("x-tid") ?? req.session?.guestId;
 
