@@ -18,6 +18,7 @@ import { sessionRouter } from "./session/routes/session.routes";
 import { sessionMiddleware } from "./middleware/cookiesHandler";
 import cookieParser from "cookie-parser";
 import { SessionRepository } from "./session/service/session.repository";
+import  orderRouter from './order/routes/order.routes'
 dotenv.config();
 
 const app = express();
@@ -80,6 +81,7 @@ app.use("/v1/menu", menuDetailRoute);
 app.use("/v1/category", categoryDetailRoute);
 app.use("/v1/info", infoRoute);
 app.use("/v1/cart", requireDeviceAndTid, cartRoute);
+app.use("/v1/order",requireDeviceAndTid, orderRouter);
 app.use("/webhook", requireDeviceAndTid, deliveryWebhookRoutes);
 
 // Error handler
