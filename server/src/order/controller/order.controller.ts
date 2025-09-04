@@ -6,13 +6,7 @@ const service = new OrderService();
 export class OrderController {
   async createOrder(req: Request, res: Response, next: NextFunction) {
     try {
-      const deviceId = req.headers["ssid"] as string;
-      if (!deviceId) {
-        return res
-          .status(400)
-          .json({ message: "Missing device identifier (ssid header)." });
-      }
-
+      const deviceId = (req as any).deviceId;
       const orderResponse = await service.createOrder(req.body, deviceId);
       return res.status(201).json({
         message: "Order created successfully",
