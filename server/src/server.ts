@@ -30,6 +30,7 @@ const allowedOrigins = [
   "http://127.0.0.1:3000",
   "http://localhost:4000",
   "https://95b2683ee436.ngrok-free.app",
+  "https://checkout.indiantadka.eu"
 ];
 const corsOptions: CorsOptions = {
   origin(origin, callback) {
