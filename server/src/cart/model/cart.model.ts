@@ -23,6 +23,7 @@ interface CartItem {
 export interface ICart extends Document {
   id: string;
   deviceId: string;
+  tid:string
   userId?: string;
   cartItems: CartItem[];
   basketId?: string;
@@ -59,6 +60,10 @@ const UserCartSchema = new Schema<ICart>(
       default: uuidv4,
     },
     deviceId: {
+      type: String,
+      required: true,
+    },
+    tid: {
       type: String,
       required: true,
     },

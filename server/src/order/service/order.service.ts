@@ -45,16 +45,12 @@ export class OrderService {
     if (!basketDetail) {
       throw new Error("Basket not found for the given basket Id");
     }
-    const sessionDetails = await this.sessionRepository.findByDeviceId(
-      basketDetail.deviceId
-    );
-    if (!sessionDetails) {
-      throw new Error("Session not found for this user");
-    }
+    console.log('basketId details',basketDetail.deviceId,basketDetail.tid)
     const userDetails = await this.userRepository.findByDeviceId(
-      sessionDetails.deviceId,
-      sessionDetails.guestId
+      basketDetail.deviceId,
+      basketDetail.tid
     );
+    console.log('userDetails',userDetails)
     if (!userDetails) {
       throw new Error("User Deails not found");
     }

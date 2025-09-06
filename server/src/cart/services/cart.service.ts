@@ -21,6 +21,7 @@ export class CartService {
 
   async updateCart(
     deviceId: string,
+    tid: string,
     payload: CartPayload
   ): Promise<ApiResponse<ICart | null>> {
     const { cart: cartItems, isCartEmpty } = payload;
@@ -35,7 +36,7 @@ export class CartService {
     }
 
     if (!cart) {
-      cart = await this.repository.create({ deviceId, cartItems: [] });
+      cart = await this.repository.create({ deviceId, tid, cartItems: [] });
     }
 
     // Add/update items in cart

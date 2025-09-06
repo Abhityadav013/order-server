@@ -192,6 +192,7 @@ export class CartController {
   async updateCart(req: Request, res: Response, next: NextFunction) {
     try {
       const deviceId = (req as any).deviceId;
+      const tid = (req as any).tid;
       if (!deviceId) {
         return res.status(400).json({
           statusCode: 400,
@@ -202,7 +203,7 @@ export class CartController {
         });
       }
       const payload = req.body;
-      const result = await this.service.updateCart(deviceId, payload);
+      const result = await this.service.updateCart(deviceId,tid, payload);
       res.status(result.statusCode).json(result);
     } catch (error) {
       next(error);
