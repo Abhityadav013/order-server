@@ -17,7 +17,6 @@ interface CartItem {
   itemName: string;
   quantity: number;
   price: number;
-  addons?: string[];
   customization?: Customization;
 }
 
@@ -45,10 +44,6 @@ export const CartItemSchema = new Schema<CartItem>(
         enum: ['no_spicy', 'spicy', 'very_spicy'],
         default: 'no_spicy',
       },
-    },
-    addons: {
-      type: [String],
-      default: [],
     },
   },
   {

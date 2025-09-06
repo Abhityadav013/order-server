@@ -38,20 +38,13 @@ export type OrderSuccessSummary = {
 };
 
 export interface CreateOrderRequest {
-  orderDetails: Cart[];
+  basketId: string;
+  deliveryTime: { asap: boolean; scheduledTime: string };
+  deliveryNote: string;
   orderType: OrderType;
   selectedMethod: PaymentMethod;
-  paymentIntentId?: string | null;
-  deliveryFee: number;
-  tipAmount: number;
-  serviceFee: number;
-  deliveryAddress?: string;
   discount?: {
     amount: number;
     code: string;
   };
-  deliveryTime: { asap: boolean; scheduledTime: string };
-  deliveryNote?: string;
-  userName: string;
-  userPhone: string;
 }
