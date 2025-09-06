@@ -89,19 +89,42 @@ app.use("/webhook", requireDeviceAndTid, deliveryWebhookRoutes);
 // Error handler
 app.use(errorHandler);
 
-// ✅ Connect DB
-connectDB(process.env.MONGO_URI || "")
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error("❌ MongoDB connection failed", err));
+// ✅ Serverless-optimized database connection
+let isDbConnected = false;
 
-// 👉 Export the app for Vercel
-export default app;
+const ensureDbConnection = async () => {
+  if (isDbConnected) return;
+  
+  try {
+    await connectDB(process.env.MONGO_URI || "");
+    isDbConnected = true;
+    console.log("✅ MongoDB connected");
+  } catch (err) {
+    console.error("❌ MongoDB connection failed", err);
+    throw err;
+  }
+};
+
+// 👉 Export handler that ensures DB connection for Vercel
+const handler = async (req: any, res: any) => {
+  await ensureDbConnection();
+  return app(req, res);
+};
+
+export default handler;
 
 // 👉 Run locally with `npm run dev`
 if (process.env.NODE_ENV !== "production") {
   const port = Number(process.env.PORT) || 4000;
-  app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-    console.log(`Swagger UI: http://localhost:${port}/api-docs`);
-  });
+  
+  // Connect to DB once for local development
+  connectDB(process.env.MONGO_URI || "")
+    .then(() => {
+      console.log("✅ MongoDB connected");
+      app.listen(port, () => {
+        console.log(`Server running on http://localhost:${port}`);
+        console.log(`Swagger UI: http://localhost:${port}/api-docs`);
+      });
+    })
+    .catch((err) => console.error("❌ MongoDB connection failed", err));
 }
