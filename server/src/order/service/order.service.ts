@@ -29,10 +29,6 @@ export class OrderService {
     req: CreateOrderRequest,
     deviceId: string
   ): Promise<OrderSuccessSummary> {
-    const onlineOrder = req.orderType === OrderType.DELIVERY;
-    const pickupOrder = req.orderType === OrderType.PICKUP;
-    const status: OrderStatus = OrderStatus.PENDING;
-    const orderDate = new Date().toISOString().split("T")[0];
     const {
       basketId,
       deliveryTime,
@@ -41,16 +37,21 @@ export class OrderService {
       selectedMethod,
       discount,
     } = req;
+    const onlineOrder = req.orderType === OrderType.DELIVERY;
+    const pickupOrder = req.orderType === OrderType.PICKUP;
+    const status: OrderStatus = OrderStatus.PENDING;
+    const orderDate = new Date().toISOString().split("T")[0];
+
     const basketDetail = await this.cartRepository.findByBasketId(basketId);
     if (!basketDetail) {
       throw new Error("Basket not found for the given basket Id");
     }
-    console.log('basketId details',basketDetail.deviceId,basketDetail.tid)
+    console.log("basketId details", basketDetail.deviceId, basketDetail.tid);
     const userDetails = await this.userRepository.findByDeviceId(
       basketDetail.deviceId,
       basketDetail.tid
     );
-    console.log('userDetails',userDetails)
+    console.log("userDetails", userDetails);
     if (!userDetails) {
       throw new Error("User Deails not found");
     }
@@ -85,14 +86,14 @@ export class OrderService {
             }
           : undefined,
       })),
-      onlineOrder,
+      orderType,
       pickupOrder,
       status,
       orderAmount,
       deviceId,
       deliveryAddress: userDetails.address.displayAddress,
       deliveryNote: deliveryNote ?? "",
-      deliveryTime: deliveryTime ?? { asap: true, scheduledTime: '' },
+      deliveryTime: deliveryTime ?? { asap: true, scheduledTime: "" },
       userName: userDetails.name,
       userPhone: userDetails.phoneNumber,
       selectedMethod: selectedMethod,
