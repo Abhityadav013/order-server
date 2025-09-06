@@ -70,7 +70,7 @@ export class OrderController {
 
   /**
    * @swagger
-   * /order/{orderId}:
+   * /v1/order/{orderId}:
    *   get:
    *     summary: Get order details by orderId
    *     tags:

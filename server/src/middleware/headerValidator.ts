@@ -8,6 +8,10 @@ export function requireDeviceAndTid(
   if(req.url.includes('/basket/')){
     return next();
   }
+   if(req.url.includes('/order/')){
+    return next();
+  }
+
   const deviceId = req.header("x-device-id") ?? req.session?.deviceId;
   const tid = req.header("x-tid") ?? req.session?.guestId;
 
