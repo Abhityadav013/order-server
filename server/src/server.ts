@@ -1,3 +1,4 @@
+// server/src/server.ts
 import express from "express";
 import cors, { CorsOptions } from "cors";
 import helmet from "helmet";
@@ -18,7 +19,8 @@ import { sessionRouter } from "./session/routes/session.routes";
 import { sessionMiddleware } from "./middleware/cookiesHandler";
 import cookieParser from "cookie-parser";
 import { SessionRepository } from "./session/service/session.repository";
-import  orderRouter from './order/routes/order.routes'
+import orderRouter from "./order/routes/order.routes";
+
 dotenv.config();
 
 const app = express();
@@ -32,6 +34,7 @@ const allowedOrigins = [
   "https://95b2683ee436.ngrok-free.app",
   "https://checkout.indiantadka.eu"
 ];
+
 const corsOptions: CorsOptions = {
   origin(origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -51,16 +54,15 @@ const corsOptions: CorsOptions = {
     "tid",
     "ssid",
   ],
-  exposedHeaders: [],
   maxAge: 86400,
 };
+
 // Middleware
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(helmet());
 app.use(morgan("dev"));
-// app.use(requireDeviceAndTid);
 
 // Swagger
 setupSwagger(app);
@@ -70,33 +72,36 @@ app.get("/", (req, res) => {
   res.redirect("/api-docs");
 });
 
+// Routes
 app.use("/v1/session", sessionRouter);
 
 const repo = new SessionRepository();
 app.use(sessionMiddleware({ repo }));
-// Example: routes that might rely on session already being established
 
-// app.use("/api/v1/auth", authRoutes);
 app.use("/v1/user-details", requireDeviceAndTid, userDetailsRoute);
 app.use("/v1/menu", menuDetailRoute);
 app.use("/v1/category", categoryDetailRoute);
 app.use("/v1/info", infoRoute);
 app.use("/v1/cart", requireDeviceAndTid, cartRoute);
-app.use("/v1/order",requireDeviceAndTid, orderRouter);
+app.use("/v1/order", requireDeviceAndTid, orderRouter);
 app.use("/webhook", requireDeviceAndTid, deliveryWebhookRoutes);
 
 // Error handler
 app.use(errorHandler);
 
+// ✅ Connect DB
+connectDB(process.env.MONGO_URI || "")
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch((err) => console.error("❌ MongoDB connection failed", err));
 
-const port = Number(process.env.PORT) || 4000;
+// 👉 Export the app for Vercel
+export default app;
 
-async function bootstrap() {
-  await connectDB(process.env.MONGO_URI || "");
+// 👉 Run locally with `npm run dev`
+if (process.env.NODE_ENV !== "production") {
+  const port = Number(process.env.PORT) || 4000;
   app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
     console.log(`Swagger UI: http://localhost:${port}/api-docs`);
   });
 }
-
-bootstrap();
