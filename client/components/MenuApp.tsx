@@ -23,7 +23,7 @@ import { useCartActions } from "@/hooks/useCartActions";
 import { useUrlParams } from "@/hooks/useUrlParams";
 import { OrderType } from "@/lib/types/enums";
 import SkeletonSidebar from "./Skeletons/SkeletonSidebar";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import {
@@ -306,11 +306,9 @@ export const MenuApp: React.FC<MenuAppProps> = ({
       return;
     }
     if (basketId) {
-      router.push(
-        `https://checkout.indiantadka.eu/?basket=${basketId}&orderType=${currentOrderType}`
-      );
+      window.location.href = `https://checkout.indiantadka.eu/?basket=${basketId}&orderType=${currentOrderType}`;
     }
-  }, [getParams, customerInfo, basketId, router]);
+  }, [getParams, customerInfo, basketId]);
 
   return (
     <div className="min-h-screen bg-gray-50">
