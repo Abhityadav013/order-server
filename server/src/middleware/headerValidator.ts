@@ -5,10 +5,10 @@ export function requireDeviceAndTid(
   res: Response,
   next: NextFunction
 ) {
-  if(req.url.includes('/basket/')){
+  if (req.url.includes("/basket/")) {
     return next();
   }
-   if(req.url.includes('/order/')){
+  if (req.query.orderId) {
     return next();
   }
 
