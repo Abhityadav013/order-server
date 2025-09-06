@@ -104,9 +104,9 @@ export class OrderService {
       orderId: newOrder.id,
       orderType: newOrder.onlineOrder ? OrderType.DELIVERY : OrderType.PICKUP,
       status,
-      deliveryTime: req.deliveryTime,
-      deliveryNote: req.deliveryNote,
-      deliveryAddress: userDetails.address.displayAddress,
+      deliveryTime: newOrder.deliveryTime,
+      deliveryNote: newOrder.deliveryNote,
+      deliveryAddress: newOrder.deliveryAddress ?? "",
       userName: userDetails.name,
       userPhone: userDetails.phoneNumber,
       selectedMethod: req.selectedMethod,
@@ -124,32 +124,32 @@ export class OrderService {
       orderDate: newOrder.orderDate,
     };
 
-    // --- Send confirmation email ---
-    const transporter = nodemailer.createTransport({
-      host: "smtp.hostinger.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    // // --- Send confirmation email ---
+    // const transporter = nodemailer.createTransport({
+    //   host: "smtp.hostinger.com",
+    //   port: 465,
+    //   secure: true,
+    //   auth: {
+    //     user: process.env.SMTP_USER,
+    //     pass: process.env.SMTP_PASS,
+    //   },
+    // });
 
-    const mailOptions = {
-      from: `"Your Order"- ${newOrder.displayId} <${process.env.SENDER_EMAIL}>`,
-      to: process.env.RECIEVER_EMAIL,
-      subject: `🔥 New Order Received - ${newOrder.displayId}`,
-      html: generateOrderConfirmationEmail(orderResponse),
-      headers: {
-        "X-Priority": "1",
-        "X-MSMail-Priority": "High",
-        Importance: "high",
-      },
-    };
+    // const mailOptions = {
+    //   from: `"Your Order"- ${newOrder.displayId} <${process.env.SENDER_EMAIL}>`,
+    //   to: process.env.RECIEVER_EMAIL,
+    //   subject: `🔥 New Order Received - ${newOrder.displayId}`,
+    //   html: generateOrderConfirmationEmail(orderResponse),
+    //   headers: {
+    //     "X-Priority": "1",
+    //     "X-MSMail-Priority": "High",
+    //     Importance: "high",
+    //   },
+    // };
 
-    transporter.sendMail(mailOptions, (error) => {
-      if (error) console.error("Error sending email:", error);
-    });
+    // transporter.sendMail(mailOptions, (error) => {
+    //   if (error) console.error("Error sending email:", error);
+    // });
 
     return orderResponse;
   }
