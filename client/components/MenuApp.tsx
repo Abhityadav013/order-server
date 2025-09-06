@@ -23,7 +23,7 @@ import { useCartActions } from "@/hooks/useCartActions";
 import { useUrlParams } from "@/hooks/useUrlParams";
 import { OrderType } from "@/lib/types/enums";
 import SkeletonSidebar from "./Skeletons/SkeletonSidebar";
-import { useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import {
@@ -282,6 +282,36 @@ export const MenuApp: React.FC<MenuAppProps> = ({
     [updateParams]
   );
 
+  const handleCheckout = useCallback(() => {
+    // Use the current orderType from Redux state (which is always in sync with URL)
+    const currentOrderType = getParams.get("orderType");
+
+    if (
+      currentOrderType === OrderType.PICKUP &&
+      (customerInfo?.name === "" ||
+        customerInfo.name === undefined ||
+        customerInfo.name == null)
+    ) {
+      setAddressModelOpen(true);
+      return;
+    }
+
+    if (
+      currentOrderType === OrderType.DELIVERY &&
+      (!customerInfo.address ||
+        Object.keys(customerInfo.address).length == 0 ||
+        customerInfo?.address?.pincode === "")
+    ) {
+      setAddressModelOpen(true);
+      return;
+    }
+    if (basketId) {
+      router.push(
+        `https://checkout.indiantadka.eu/?basket=${basketId}&orderType=${currentOrderType}`
+      );
+    }
+  }, [getParams, customerInfo, basketId, router]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <NavBarNavigation label="Our Menu" redirect_url="/" isImage={false} />
@@ -348,9 +378,7 @@ export const MenuApp: React.FC<MenuAppProps> = ({
           addToBasket={addToBasket}
           removeFromBasket={removeFromBasket}
           deleteTheItem={deleteTheItem}
-          onCheckout={() => {
-            router.push("/checkout");
-          }}
+          onCheckout={handleCheckout}
           isUpdating={isUpdating}
           basketId={basketId}
           updateItemCustomization={updateItemCustomization}
