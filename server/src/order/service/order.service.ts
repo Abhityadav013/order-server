@@ -17,12 +17,10 @@ export class OrderService {
   private repository: OrderRepository;
   private cartRepository: CartRepository;
   private userRepository: UserRepository;
-  private sessionRepository: SessionRepository;
   constructor() {
     this.repository = new OrderRepository();
     this.cartRepository = new CartRepository();
     this.userRepository = new UserRepository();
-    this.sessionRepository = new SessionRepository();
   }
 
   async createOrder(
@@ -46,12 +44,10 @@ export class OrderService {
     if (!basketDetail) {
       throw new Error("Basket not found for the given basket Id");
     }
-    console.log("basketId details", basketDetail.deviceId, basketDetail.tid);
     const userDetails = await this.userRepository.findByDeviceId(
       basketDetail.deviceId,
       basketDetail.tid
     );
-    console.log("userDetails", userDetails);
     if (!userDetails) {
       throw new Error("User Deails not found");
     }
@@ -152,6 +148,7 @@ export class OrderService {
     //   if (error) console.error("Error sending email:", error);
     // });
 
+     await this.cartRepository.deleteByDeviceId(basketDetail.deviceId);
     return orderResponse;
   }
 
