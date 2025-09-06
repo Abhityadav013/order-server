@@ -306,7 +306,7 @@ export const MenuApp: React.FC<MenuAppProps> = ({
       return;
     }
     if (basketId) {
-      window.location.href = `https://checkout.indiantadka.eu/?basketId=${basketId}&orderType=${currentOrderType}`;
+      window.location.href = `https://checkout.indiantadka.eu?basketId=${basketId}&orderType=${currentOrderType}`;
     }
   }, [getParams, customerInfo, basketId]);
 
