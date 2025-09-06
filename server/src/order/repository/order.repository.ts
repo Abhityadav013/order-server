@@ -8,6 +8,6 @@ export class OrderRepository {
   }
 
   async findById(orderId: string): Promise<IOrder | null> {
-    return Order.findById(orderId).exec();
+    return Order.findById({displayId:orderId}).exec();
   }
 }

@@ -16,4 +16,24 @@ export class OrderController {
       next(error);
     }
   }
+
+    async getOrderByOrderId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { orderId } = req.params;
+
+      if (!orderId) {
+        return res.status(400).json({
+          statusCode: 400,
+          data: null,
+          message: "Missing orderId parameter.",
+          success: false,
+        });
+      }
+
+      const result = await service.getOrderByOrderId(orderId);
+      res.status(result.statusCode).json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid"; // uuid for generating unique orderId
 import CounterModel from "../../models/Counter";
 import { PaymentMethod } from "../../models/types/paymentTypes";
 import { SpicyLevel } from "../../models/enums";
+import { CartItemSchema } from "../../cart/model/cart.model";
 
 export const OrderSchemaName = "Order"; // Collection name
 
@@ -88,26 +89,7 @@ const OrderSchema = new Schema<IOrder>(
       type: String,
       required: true,
     },
-    orderItems: [
-      {
-        itemId: {
-          type: String, // GUID for itemId
-          required: true,
-        },
-        itemName: {
-          type: String,
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
-        price: {
-          type: Number,
-          required: true,
-        },
-      },
-    ],
+    orderItems: [CartItemSchema],
     orderAmount: {
       type: Object,
       required: true,

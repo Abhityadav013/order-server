@@ -30,7 +30,7 @@ export interface ICart extends Document {
   refreshToken?: string;
 }
 
-const CartItemSchema = new Schema<CartItem>(
+export const CartItemSchema = new Schema<CartItem>(
   {
     itemId: { type: String, required: true },
     itemName: { type: String, required: true },
